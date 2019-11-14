@@ -1,6 +1,6 @@
 {
-  "name": "@serverless/aws-api-gateway",
-  "version": "4.1.0",
+  "name": "@everymundo/aws-api-gateway-serverless-component",
+  "version": "1.0.0",
   "main": "./serverless.js",
   "publishConfig": {
     "access": "public"
@@ -9,7 +9,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint . --fix --cache"
   },
-  "author": "Serverless, Inc.",
+  "author": "Everymundo - fork from Serverless, Inc",
   "license": "Apache",
   "dependencies": {
     "@serverless/core": "^1.0.0",

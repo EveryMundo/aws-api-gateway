@@ -277,6 +277,7 @@ const createIntegration = async ({ apig, lambda, apiId, endpoint }) => {
 
   if (isLambda) {
     functionName = endpoint.function.split(':')[6]
+    alias = endpoint.function.split(':').length > 7 ? endpoint.function.split(':')[7] : null
     accountId = endpoint.function.split(':')[4]
     region = endpoint.function.split(':')[3] // todo what if the lambda in another region?
   }
@@ -309,7 +310,7 @@ const createIntegration = async ({ apig, lambda, apiId, endpoint }) => {
   if (isLambda) {
     const permissionsParams = {
       Action: 'lambda:InvokeFunction',
-      FunctionName: functionName,
+      FunctionName: functionName + (alias ? `:${alias}` : ''),
       Principal: 'apigateway.amazonaws.com',
       SourceArn: `arn:aws:execute-api:${region}:${accountId}:${apiId}/*/*`,
       StatementId: `${functionName}-${apiId}`
