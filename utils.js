@@ -338,8 +338,8 @@ const createIntegrations = async ({ apig, lambda, apiId, endpoints }) => {
   return Promise.all(promises)
 }
 
-const createDeployment = async ({ apig, apiId, stage }) => {
-  const deployment = await apig.createDeployment({ restApiId: apiId, stageName: stage }).promise()
+const createDeployment = async ({ apig, apiId, stage, tracingEnabled }) => {
+  const deployment = await apig.createDeployment({ restApiId: apiId, stageName: stage, tracingEnabled }).promise()
 
   // todo add update stage functionality
 

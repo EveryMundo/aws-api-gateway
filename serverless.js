@@ -22,7 +22,8 @@ const defaults = {
   region: 'us-east-1',
   stage: 'dev',
   description: 'Serverless Components API',
-  endpointTypes: ['EDGE']
+  endpointTypes: ['EDGE'],
+  tracingEnabled: false
 }
 
 class AwsApiGateway extends Component {
@@ -33,7 +34,7 @@ class AwsApiGateway extends Component {
 
     config.name = this.state.name || inputs.name || this.context.resourceId()
 
-    const { name, description, region, stage, endpointTypes } = config
+    const { name, description, region, stage, endpointTypes, tracingEnabled } = config
 
     this.context.debug(`Starting API Gateway deployment with name ${name} in the ${region} region`)
 
@@ -108,7 +109,7 @@ class AwsApiGateway extends Component {
       `Creating deployment for API ID ${apiId} in the ${stage} stage and the ${region} region.`
     )
 
-    await retry(() => createDeployment({ apig, apiId, stage }))
+    await retry(() => createDeployment({ apig, apiId, stage, tracingEnabled }))
 
     config.url = `https://${apiId}.execute-api.${region}.amazonaws.com/${stage}`
 
