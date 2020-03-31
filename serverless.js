@@ -6,6 +6,7 @@ const {
   createApi,
   validateEndpoints,
   createAuthorizers,
+  createBasePathMapping,
   createPaths,
   createMethods,
   createIntegrations,
@@ -34,7 +35,7 @@ class AwsApiGateway extends Component {
 
     config.name = this.state.name || inputs.name || this.context.resourceId()
 
-    const { name, description, region, stage, endpointTypes, tracingEnabled } = config
+    const { name, description, region, stage, endpointTypes, tracingEnabled, customDomain } = config
 
     this.context.debug(`Starting API Gateway deployment with name ${name} in the ${region} region`)
 
@@ -110,6 +111,13 @@ class AwsApiGateway extends Component {
     )
 
     await retry(() => createDeployment({ apig, apiId, stage, tracingEnabled }))
+
+    if (customDomain) {
+      this.context.debug(
+        `Creating custom domain basePathMapping ${customDomain.basePath} for API ID ${apiId} in the ${stage} stage and for ${customDomain.domainName}`
+      )
+      await createBasePathMapping({ apig, apiId, domainName: customDomain.domainName, stage, basePath: customDomain.basePath })      
+    }
 
     config.url = `https://${apiId}.execute-api.${region}.amazonaws.com/${stage}`
 

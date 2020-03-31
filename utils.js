@@ -544,6 +544,25 @@ const removeOutdatedEndpoints = async ({ apig, apiId, endpoints, stateEndpoints 
   return outdatedEndpoints
 }
 
+const createBasePathMapping = async ({ apig, apiId, domainName, stage, basePath}) => {
+  const params = {
+    domainName,
+    restApiId: apiId,
+    basePath,
+    stage,
+  };
+
+  try {
+    await apig.createBasePathMapping(params).promise();
+  }
+  catch(e){
+    if (e.code !== 'ConflictException') {
+      throw Error(e)
+    }
+  }
+  
+}
+
 module.exports = {
   validateEndpointObject,
   validateEndpoint,
@@ -555,6 +574,7 @@ module.exports = {
   getPathId,
   createAuthorizer,
   createAuthorizers,
+  createBasePathMapping,
   createPath,
   createPaths,
   createMethod,
