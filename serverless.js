@@ -24,7 +24,8 @@ const defaults = {
   stage: 'dev',
   description: 'Serverless Components API',
   endpointTypes: ['EDGE'],
-  tracingEnabled: false
+  tracingEnabled: false,
+  minimumCompressionSize : 1024
 }
 
 class AwsApiGateway extends Component {
@@ -35,7 +36,7 @@ class AwsApiGateway extends Component {
 
     config.name = this.state.name || inputs.name || this.context.resourceId()
 
-    const { name, description, region, stage, endpointTypes, tracingEnabled, customDomain } = config
+    const { name, description, region, stage, endpointTypes, tracingEnabled, customDomain, minimumCompressionSize } = config
 
     this.context.debug(`Starting API Gateway deployment with name ${name} in the ${region} region`)
 
@@ -56,7 +57,7 @@ class AwsApiGateway extends Component {
 
     if (!apiId) {
       this.context.debug(`API ID not found in state. Creating a new API.`)
-      apiId = await createApi({ apig, name, description, endpointTypes })
+      apiId = await createApi({ apig, name, description, endpointTypes, minimumCompressionSize })
       this.context.debug(`API with ID ${apiId} created.`)
       this.state.id = apiId
       await this.save()

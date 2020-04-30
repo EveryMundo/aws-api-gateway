@@ -35,14 +35,15 @@ const apiExists = async ({ apig, apiId }) => {
   }
 }
 
-const createApi = async ({ apig, name, description, endpointTypes }) => {
+const createApi = async ({ apig, name, description, endpointTypes, minimumCompressionSize }) => {
   const api = await apig
     .createRestApi({
       name,
       description,
       endpointConfiguration: {
         types: endpointTypes
-      }
+      },
+      minimumCompressionSize
     })
     .promise()
 
