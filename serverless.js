@@ -45,12 +45,14 @@ class AwsApiGateway extends Component {
 
     const apig = new AWS.APIGateway({
       region,
-      credentials: this.context.credentials.aws
+      credentials: this.context.credentials.aws,
+      maxRetries: 10
     })
 
     const lambda = new AWS.Lambda({
       region: config.region,
-      credentials: this.context.credentials.aws
+      credentials: this.context.credentials.aws,
+      maxRetries: 10
     })
 
     let apiId = this.state.id || config.id
